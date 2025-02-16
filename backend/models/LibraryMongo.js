@@ -6,6 +6,10 @@ export class LibraryMongo {
 
   createConnection = async () => {
 
+
+    console.log(MONGO_CONFIG.MONGO_URL);
+
+    
     try {
 
       this.client = new MongoClient(MONGO_CONFIG.MONGO_URL); 

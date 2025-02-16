@@ -1,7 +1,7 @@
 import { LibraryMongo } from '../models/LibraryMongo.js'
 
 
-const MongoGetBooks = (async (req, res) => {
+export const MongoGetBooks = (async (req, res) => {
     
     try {
 
@@ -17,7 +17,7 @@ const MongoGetBooks = (async (req, res) => {
 
 })
 
-const MongoCreateBook = (async (req, res) => {
+export const MongoCreateBook = (async (req, res) => {
 
     const { title, author, year } = req.body;
 
@@ -44,7 +44,7 @@ const MongoCreateBook = (async (req, res) => {
     
 })
 
-const MongoUpdateBook = ( async (req, res) => {
+export const MongoUpdateBook = ( async (req, res) => {
 
 
     const { id, title, author, year } =  req.body;
@@ -73,7 +73,7 @@ const MongoUpdateBook = ( async (req, res) => {
 })
 
 
-const MongoDeleteBook = ( async (req, res) => {
+export const MongoDeleteBook = ( async (req, res) => {
 
     const id = parseInt(req.body.id);
 

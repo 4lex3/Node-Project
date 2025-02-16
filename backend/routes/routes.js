@@ -1,8 +1,10 @@
 import express from 'express'
-import { createBook, deleteBook, getBooks, updateBook } from '../controllers/books.js'
-import { AuthMiddleware } from '../auth/auth.js'
-import { LoginController } from '../auth/auth.controller.js';
 
+import { createBook, deleteBook, getBooks, updateBook } from '../controllers/books.js'
+import { LoginController } from '../auth/auth.controller.js';
+import { MongoCreateBook, MongoDeleteBook, MongoGetBooks, MongoUpdateBook } from '../controllers/mongoBooks.js';
+
+import { AuthMiddleware } from '../auth/auth.js'
 const router = express.Router()
 
 
@@ -11,10 +13,11 @@ router.post('/api/login', LoginController);
 
 
 //* MongoDB Controllers
-router.get('/mongo/books', AuthMiddleware, getBooks)
-router.post('/mongo/books', createBook)
-router.put('/mongo/books', updateBook)
-router.delete('/mongo/books', deleteBook)
+// router.get('/mongo/books', AuthMiddleware, getBooks)
+router.get('/mongo/books', MongoGetBooks)
+router.post('/mongo/books', MongoCreateBook)
+router.put('/mongo/books', MongoUpdateBook)
+router.delete('/mongo/books', MongoDeleteBook)
 
 
 //*Mysql Controllers
