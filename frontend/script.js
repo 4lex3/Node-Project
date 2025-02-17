@@ -1,25 +1,46 @@
-const baseURL = "http://localhost:5000/api/books";
+//! Descomenta esta url para usar la version de Mysql:
+// const baseURL = "http://localhost:5000/api/books";
+const baseURL = "http://localhost:5000/mongo/books";
 
 
 window.onload = () => {
-    // Pedimos a la API los libros actuales en base de datos
+
+    if(!findTokenCookie()){
+        RedirectToLogin();
+    }
+    
     fetchBooks();
 
     // Añadimos al botón de submit del formulario un listener para enlazarlo a la función createBook
     document.querySelector('#createButton').addEventListener('click', createBook);
 
-    document.querySelector('#downloadButton').addEventListener('click', downloadVideo);
 }
 
-async function fetchBooks() {
-    let apiUrl = baseURL;
-    let res = await fetch(apiUrl);
-    let books = await res.json();
-    // console.log(books);
 
-    //Borramos el contenido de la tabla
+//! Funciones Agregadas: 
+function findTokenCookie() {
+    const cookies = document.cookie.split('; ');
+    return cookies.find(cookie => cookie.startsWith('token'+ '='))?.split('=')[1] || null;
+}
+
+function RedirectToLogin() {
+    window.location.replace('login.html');
+}
+
+
+async function fetchBooks() {
+
+    let apiUrl = baseURL;
+    let res = await fetch(apiUrl, {
+        headers: {
+            'Authorization': findTokenCookie()
+        }
+    });
+
+
+    let books = await res.json();
+
     eraseTable();
-    // Poblamos la tabla con el contenido del JSON
     updateTable(books);
 }
 
@@ -86,6 +107,7 @@ async function deleteBook(event) {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
+            'Authorization': findTokenCookie()
         },
         body: JSON.stringify(deletedBook)
     });
@@ -118,6 +140,7 @@ async function editBook(event) {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
+            'Authorization': findTokenCookie()
         },
         body: JSON.stringify(modifiedBook)
     });
@@ -148,6 +171,7 @@ async function createBook(event) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            'Authorization': findTokenCookie()
         },
         body: JSON.stringify(newBook)
     });
@@ -158,56 +182,3 @@ async function createBook(event) {
     //Volvemos a pedir libros
     fetchBooks();
 }
-
-// function downloadVideo() {
-//     console.log('Donwloading video...');
-//     // 1. Create a new XMLHttpRequest object
-//     let xhr = new XMLHttpRequest();
-
-//     // 2. Configure it: GET-request for the URL /article/.../load
-//     xhr.open('GET', './vid.mp4');
-
-//     // 3. Set the responseType to 'blob' to handle binary data
-//     xhr.responseType = 'blob';
-
-//     // 4. Send the request over the network
-//     xhr.send();
-
-//     // 5. This will be called after the response is received
-//     xhr.onload = function () {
-//         if (xhr.status != 200) { // analyze HTTP status of the response
-//             console.log(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
-//         } else { // show the result
-//             console.log(`Done downloading video!`); // response is the server response
-
-//             // CREATE A TEMPORARY DOWNLOAD LINK
-//             // Create a blob URL for the video
-//             console.log(`Creating download link!`);
-//             const blob = new Blob([xhr.response], { type: 'video/mp4' });
-//             const url = URL.createObjectURL(blob);
-
-//             // Create a temporary download link
-//             const a = document.createElement('a');
-//             a.href = url;
-//             a.download = 'downloaded_video.mp4'; // Suggested file name
-//             document.body.appendChild(a);
-//             a.click();
-
-//             // Remove the temporary link
-//             document.body.removeChild(a);
-//         }
-//     };
-
-//     xhr.onprogress = function (event) {
-//         if (event.lengthComputable) {
-//             console.log(`Received ${event.loaded} of ${event.total} bytes`);
-//         } else {
-//             console.log(`Received ${event.loaded} bytes`); // no Content-Length
-//         }
-
-//     };
-
-//     xhr.onerror = function () {
-//         alconsole.log("Request failed");
-//     };
-// }

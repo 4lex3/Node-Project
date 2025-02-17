@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../config/server.config.js';
 
 export const UNAUTHORIZED = {
-    "Message": 'Not authorized, incorrect credentials!'
+    "message": 'Not authorized, incorrect credentials!'
 };
 
 

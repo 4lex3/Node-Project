@@ -9,22 +9,21 @@ const router = express.Router()
 
 
 //* Auth:
-router.post('/api/login', LoginController);
+router.post('/api/login', LoginController)
 
 
 //* MongoDB Controllers
-// router.get('/mongo/books', AuthMiddleware, getBooks)
-router.get('/mongo/books', MongoGetBooks)
-router.post('/mongo/books', MongoCreateBook)
-router.put('/mongo/books', MongoUpdateBook)
-router.delete('/mongo/books', MongoDeleteBook)
+router.get('/mongo/books', AuthMiddleware, MongoGetBooks);
+router.post('/mongo/books', AuthMiddleware, MongoCreateBook);
+router.put('/mongo/books', AuthMiddleware, MongoUpdateBook);
+router.delete('/mongo/books', AuthMiddleware, MongoDeleteBook);
 
 
 //*Mysql Controllers
-router.get('/api/books', getBooks)
-router.post('/api/books', createBook)
-router.put('/api/books', updateBook)
-router.delete('/api/books', deleteBook)
+router.get('/api/books', AuthMiddleware, getBooks);
+router.post('/api/books', AuthMiddleware, createBook);
+router.put('/api/books', AuthMiddleware, updateBook);
+router.delete('/api/books', AuthMiddleware, deleteBook);
 
 
 export { router };
